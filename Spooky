@@ -1,5 +1,3 @@
-local UserInputService = game:GetService("UserInputService")
-	
 getgenv().antilock = true
         game.StarterGui:SetCore("SendNotification", {
         Title = "On";
