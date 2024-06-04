@@ -1,6 +1,6 @@
+  getgenv().SkyAmount = 90
 getgenv().Sky = true
 game:GetService("RunService").heartbeat:Connect(function()
-  getgenv().SkyAmount = 90
 if getgenv().Sky ~= true then 
     local vel = game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity
     game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,      getgenv().SkyAmount,0)
