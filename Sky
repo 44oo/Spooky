@@ -1,6 +1,5 @@
-getgenv().Sky = true --disable or enable the antilock
-getgenv().SkyAmount = 90 --how far it should be
- 
+getgenv().Sky = true
+getgenv().SkyAmount = 90
 game:GetService("RunService").heartbeat:Connect(function()
     if getgenv().Sky ~= true then 
     local vel = game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity
