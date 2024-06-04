@@ -1,84 +1,136 @@
-local new = { 
-    main = { 
-        Mario = true,
-        Prediction = 0.1659992222222,
-        Part = "HumanoidRootPart", -- Head, UpperTorso, HumanoidRootPart, LowerTorso, RightFoot, LeftFoot, RightArm, LeftArm 
-        Key = "q",
-        Notifications = true,
-        AirshotFunc = true
-    },
-    Tracer = { 
-        TracerThickness = 3.5, -- made by thusky
-        TracerTransparency = 1, -- made by thusky
-        TracerColor = Color3.fromRGB(153, 50, 204) -- made by thusky
-    }
-}
+getgenv().OldAimPart = "HumanoidRootPart"
+getgenv().AimPart = "Head"
+getgenv().AimRadius =  25
+getgenv().ThirdPerson = true
+getgenv().FirstPerson = true
+getgenv().TeamCheck = false
+getgenv().line = true
+getgenv().keybind ="e"
+getgenv().PredictMovement = true
+getgenv().PredictionVelocity =6
+getgenv().CheckIfJumped = true
+getgenv().Smoothness = false
+getgenv().SmoothnessAmount = 0.06
+getgenv().Aimlock = true
+----------------settings
 
 
-local CurrentCamera = game:GetService "Workspace".CurrentCamera
-local Mouse = game.Players.LocalPlayer:GetMouse()
-local RunService = game:GetService("RunService")
-local Plr = game.Players.LocalPlayer
+
+
+
+
+
+
+
+
+
+
+
+
+
+getgenv().CurrentCamera = game:GetService "Workspace".CurrentCamera
+
+
+
+
+
+
+
+
+--[[
+shit made by din <3
+
+love kendylll
+
+
+-----shit for taffy
+]]
+
+local services = setmetatable({ }, {
+    __index = function(t,k)
+        return game:GetService(k)
+    end
+})
+local Players = services.Players
+local Uisf = services.UserInputService
+local Workgalaxy = services.Workspace
+local RService = services.RunService
+local SGui = services.StarterGui
+local Inset2 = game:GetService("GuiService"):GetGuiInset().Y
+
+
+local mousef = game.Players.LocalPlayer:GetMouse()
+local Clientuser = Players.LocalPlayer
+local runshit = game:GetService("RunService")
+local localnigger = game.Players.LocalPlayer
 local Line = Drawing.new("Line")
-local Inset = game:GetService("GuiService"):GetGuiInset().Y
 
-Mouse.KeyDown:Connect(function(KeyPressed)
-    if KeyPressed == (new.main.Key) then
-        if new.main.Mario == true then
-            new.main.Mario = false
-            if new.main.Notifications == true then
-                Plr = FindClosestUser()
-                game.StarterGui:SetCore("SendNotification", {
-                    Title = "<3",
-                    Text = "No longer locked on"
-                })
+
+local camgay = Workspace.CurrentCamera
+
+local CF = CFrame.new
+local RNew = Ray.new
+local Vec3 = Vector3.new
+local Vec2 = Vector2.new
+local MousePressed, CanNotify =false, false
+local AimlockTarget, OldPre
+
+local CiazwareUniversalAimbotLoaded = true
+
+local Target, PartMode, Partz, NotifMode, Prediction
+local SpinBotSpeed
+
+local GetNearestTarget = function()
+    local plr1g2 = nil;
+    local distance = 99999;
+    
+    for i, v in next, Players:GetPlayers() do
+        if v.Name ~= Clientuser.Name then
+            --if v.Character and v.Team ~= Clientuser.Team then
+            if v.Character then
+                local pos,aaaa = camgay:WorldToViewportPoint(v.Character.Head.Position);
+                local mouse = Uisf:GetMouseLocation()
+                local magnitude = (Vec2(pos.X, pos.Y) - Vec2(mousef.X, mousef.Y)).magnitude;
+
+                if aaaa and (magnitude < distance) then
+                    plr1g2 = v;
+                    distance = magnitude;
+                end
             end
-        else
-            Plr = FindClosestUser()
-            new.main.Mario = true
-            if new.main.Notifications == true then
-                game.StarterGui:SetCore("SendNotification", {
-                    Title = "<3",
-                    Text = "Locked on to:" .. tostring(Plr.Character.Humanoid.DisplayName)
-                })
-            end
+        end
+    end
+    
+    return plr1g2;
+end
+
+
+mousef.KeyDown:Connect(function(k)
+    if k ~= keybind then return end
+    if Aimlock and AimlockTarget == nil then
+        if MousePressed ~= true then MousePressed = true end 
+        local Target;Target = GetNearestTarget()
+        if Target ~= nil then
+            AimlockTarget = Target
+        end
+    else
+        if AimlockTarget ~= nil then AimlockTarget = nil end
+        if MousePressed ~= false then 
+            MousePressed = false 
+            Line.Visible = false
         end
     end
 end)
 
-function FindClosestUser()
-    local closestPlayer
-    local shortestDistance = math.huge
-
-    for i, v in pairs(game.Players:GetPlayers()) do
-        if v ~= game.Players.LocalPlayer and v.Character and v.Character:FindFirstChild("Humanoid") and
-            v.Character.Humanoid.Health ~= 0 and v.Character:FindFirstChild("HumanoidRootPart") then
-            local pos = CurrentCamera:WorldToViewportPoint(v.Character.PrimaryPart.Position)
-            local magnitude = (Vector2.new(pos.X, pos.Y) - Vector2.new(Mouse.X, Mouse.Y)).magnitude
-            if magnitude < shortestDistance then
-                closestPlayer = v
-                shortestDistance = magnitude
-            end
-        end
-    end
-    return closestPlayer
-end
-
-
-
-
-RunService.Stepped:connect(function()
-    if new.main.Mario == true then
-        local Vector = CurrentCamera:WorldToViewportPoint(Plr.Character[new.main.Part].Position +
-                                                              (Plr.Character.HumanoidRootPart.Velocity *
-                                                                  new.main.Prediction))
-        Line.Color = new.Tracer.TracerColor                                                                          -- made by saad
-        Line.Thickness = new.Tracer.TracerThickness
-        Line.Transparency = new.Tracer.TracerTransparency
+runshit.Stepped:connect(function()
+    if line == true then
+        local Vector = CurrentCamera:WorldToViewportPoint(AimlockTarget.Character[AimPart].Position)
+        Line.Color = Color3.fromRGB(255,255,255)                                                              
+        Line.Thickness = 2.5
+        Line.Transparency = 1
  
 
-        Line.From = Vector33new(Mouse.X, Mouse.Y + Inset)
-        Line.To = Vector3.new(Vector.X, Vector.Y)
+        Line.From = Vector2.new(mousef.X, mousef.Y + Inset2)
+        Line.To = Vector2.new(Vector.X, Vector.Y)
         Line.Visible = true
     else
         Line.Visible = false
@@ -87,29 +139,55 @@ RunService.Stepped:connect(function()
 end)
 
 
-local mt = getrawmetatable(game)
-local old = mt.__namecall
-setreadonly(mt, false)
-mt.__namecall = newcclosure(function(...)
-    local args = {...}
-    if new.main.Mario and getnamecallmethod() == "FireServer" and args[2] == "UpdateMousePos" then
-        args[3] = Plr.Character[new.main.Part].Position +
-                      (Plr.Character[new.main.Part].Velocity * new.main.Prediction)
-        return old(unpack(args))
-    end
-    return old(...)
-end)
 
-if new.main.AirshotFunc == true then
-    if Plr.Character.Humanoid.Jump == true and Plr.Character.Humanoid.FloorMaterial == Enum.Material.Air then
-        settings.main.Part = "RightFoot"
-    else
-        Plr.Character:WaitForChild("Humanoid").StateChanged:Connect(function(old,new)
-            if new == Enum.HumanoidStateType.Freefall then
-                settings.main.Part = "RightFoot"
-            else
-                settings.main.Part = "LowerTorso"
-            end
-        end)
+
+RService.RenderStepped:Connect(function()
+    if ThirdPerson == true and FirstPerson == true then 
+        if (camgay.Focus.p - camgay.CoordinateFrame.p).Magnitude > 1 or (camgay.Focus.p - camgay.CoordinateFrame.p).Magnitude <= 1 then 
+            CanNotify = true 
+        else 
+            CanNotify = false 
+        end
+    elseif ThirdPerson == true and FirstPerson == false then 
+        if (camgay.Focus.p - camgay.CoordinateFrame.p).Magnitude > 1 then 
+            CanNotify = true 
+        else 
+            CanNotify = false 
+        end
+    elseif ThirdPerson == false and FirstPerson == true then 
+        if (camgay.Focus.p - camgay.CoordinateFrame.p).Magnitude <= 1 then 
+            CanNotify = true 
+        else 
+            CanNotify = false 
+        end
     end
-end
+    if Aimlock == true and MousePressed == true then 
+        if AimlockTarget and AimlockTarget.Character and AimlockTarget.Character:FindFirstChild(AimPart) then 
+            if FirstPerson == true then
+                if CanNotify == true then
+                    if PredictMovement == true then
+                        if Smoothness == true then
+                            --// The part we're going to lerp/smoothen \\--
+                            local Main = CF(camgay.CFrame.p, AimlockTarget.Character[AimPart].Position + AimlockTarget.Character[AimPart].Velocity/PredictionVelocity)
+                            
+                            --// Making it work \\--
+                            camgay.CFrame = camgay.CFrame:Lerp(Main, SmoothnessAmount, Enum.EasingStyle.Elastic, Enum.EasingDirection.InOut)
+                        else
+                            camgay.CFrame = CF(camgay.CFrame.p, AimlockTarget.Character[AimPart].Position + AimlockTarget.Character[AimPart].Velocity/PredictionVelocity)
+                        end
+                    elseif PredictMovement == false then 
+                        if Smoothness == true then
+                            --// The part we're going to lerp/smoothen \\--
+                            local Main = CF(camgay.CFrame.p, AimlockTarget.Character[AimPart].Position)
+
+                            --// Making it work \\--
+                            camgay.CFrame = camgay.CFrame:Lerp(Main, SmoothnessAmount, Enum.EasingStyle.Elastic, Enum.EasingDirection.InOut)
+                        else
+                            camgay.CFrame = CF(camgay.CFrame.p, AimlockTarget.Character[AimPart].Position)
+                        end
+                    end
+                end
+            end
+        end
+    end
+end)
