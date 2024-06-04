@@ -1,5 +1,4 @@
-getgenv().Antilock = true 
-getgenv().AntilockAmount = 90
+getgenv().Antilock = true
 game:GetService("RunService").heartbeat:Connect(function()
     if getgenv().Antilock == true then 
 local abc = game.Players.LocalPlayer.Character.HumanoidRootPart.Velocity
