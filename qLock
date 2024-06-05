@@ -1,7 +1,6 @@
---// Credits to who ever made this
-_G.KEY = "s"
+_G.KEY = "q"
 		_G.PART = "HumanoidRootPart"
-		_G.PRED = 0.037
+		_G.PRED = 0.048
 		_G.Frame = Vector3.new(0, 0.53, 0)
 		local L_76_ = game:GetService "Workspace".CurrentCamera
 		getgenv().L_77_ = nil
@@ -127,10 +126,10 @@ end)
 		game.Players.LocalPlayer.Chatted:Connect(
 			function(L_112_arg0)
 				if L_112_arg0 == "/e hrp" then
-					_G.KEY = "s"
+					_G.KEY = "q"
 					_G.AIR = 0.00005
 					_G.PART = "HumanoidRootPart"
-					_G.PRED = 0.037
+					_G.PRED = 0.032
 					TextLabel.Visible = true
 				end
 			end
@@ -138,10 +137,10 @@ end)
 		game.Players.LocalPlayer.Chatted:Connect(
 			function(L_113_arg0)
 				if L_113_arg0 == "/e lt" then
-					_G.KEY = "s"
+					_G.KEY = "q"
 					_G.AIR = 0.00005
 					_G.PART = "LowerTorso"
-					_G.PRED = 0.037
+					_G.PRED = 0.032
 					TextLabel.Visible = true
 				end
 			end
@@ -149,10 +148,10 @@ end)
 		game.Players.LocalPlayer.Chatted:Connect(
 			function(L_114_arg0)
 				if L_114_arg0 == "Screensharing" then
-					_G.KEY = "s"
+					_G.KEY = "q"
 					_G.AIR = 0.00005
 					_G.PART = "LowerTorso"
-					_G.PRED = 0.037
+					_G.PRED = 0.033
 					TextLabel.Visible = true
 					L_81_ = nil
 				end
@@ -179,7 +178,7 @@ function start()
 				getClosestPlayerToCursor().Character.Humanoid.FloorMaterial == Enum.Material.Air
 			then
 				_G.Frame = Vector3.new(0, -2.3, 0)
-				wait(0.03)
+				wait(0.05)
 			else
 				local L_117_ = game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValueString()
 				local L_118_ = tostring(L_117_)
